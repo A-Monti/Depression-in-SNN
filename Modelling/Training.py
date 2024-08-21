@@ -42,7 +42,7 @@ class Train_Model:
                 
                 # Ensure y is an array
                 if np.isscalar(y):
-                    y = np.array([y])
+                    y = np.array([y], dtype=np.float64)
                 
                 # Compute loss
                 loss = np.mean((output - y) ** 2)
