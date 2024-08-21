@@ -96,7 +96,7 @@ class Morris_Lecar:
         return self.gL * (V - self.VL)
     
 
-    def dV(self, V: float, W: float) -> float:
+    def dV(self, I: float, V: float, W: float) -> float:
         """
         Function for changes in membrane potential. Calculations are based on Calcium Potassium 
 
@@ -106,7 +106,8 @@ class Morris_Lecar:
         Returns: 
         @float: Change of membrane potential
         """
-        return self.I_ext - self.I_Ca(V) - self.I_K(V) - self.I_L(V)
+        # return self.I_ext - self.I_Ca(V) - self.I_K(V) - self.I_L(V)
+        return I - self.I_Ca(V) - self.I_K(V) - self.I_L(V)
     
 
     def dW(self, V: float, W: float) -> float:
@@ -122,13 +123,14 @@ class Morris_Lecar:
         return (self.w_inf(V) - W) / self.tau_w(V)
         # return self.phi * (self.beta_m(V) - W)
     
-    def update(self, dt):
+    def update(self, I, dt):
         """
         Function to update the membrane potential 
         """
-        self.V = self.V + dt * self.dV(self.V, self.W)
+        self.V = self.V + dt * self.dV(I, self.V, self.W)
         self.W = self.W + dt * self.dW(self.V, self.W)
         self.V_vals.append(self.V)
+        return self.V, self.W
 
     def STDP(self, delta_t, A_plus=0.005, A_minus=0.005, t_plus=20.0, t_minus=20.0):
         if delta_t > 0:
