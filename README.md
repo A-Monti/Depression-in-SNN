@@ -1,4 +1,4 @@
-## Depression in SNN
+# Depression in SNN
 
 This project can be accessed through codespace for testing. 
 
@@ -8,13 +8,13 @@ This project can be accessed through codespace for testing.
 - In `.\Modelling` a `Training` class can be seen, however this has been implemented in the `SNN` class directly. For future projects this class could be useful for better distribution of files.
 - Finally, in `.\Emotion_data`, the data in can be found with both, input strings and output strings. 
 
-### SNNs
+## SNNs
 In this folder, two classes are implemented: 
 
 1. `Morris_Lecar_Neuron.py` applies a Morris-Lecar model of a neuron. It is structured so that it already stores a number of neurons in itself, for better computing.
 2. `Default_SNN.py` applies the Morris-Lecar neuron (or rather neuron collection) to the process of training. All results are stored in the `.\Results` folder.
 
-### Results
+## Results
 In this folder, the following can be found: 
 
 1. File to the weights of the trained model.
