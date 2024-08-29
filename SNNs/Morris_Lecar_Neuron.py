@@ -2,11 +2,21 @@ import numpy as np
 
 class Morris_Lecar:
     def __init__(self) -> None:
-        self.V1 = -1.2
-        self.V2 = 18
-        self.V3 = 12
-        self.V4 = 17.4
-        self.phi = 0.04 
+        """
+        Init function for neuron.
+
+        Attributes: 
+        @None
+
+        Return: 
+        @None
+        """
+
+        self.V1 = -1.2 # Voltage 1
+        self.V2 = 18 # Voltage 2
+        self.V3 = 12 # Voltage 3
+        self.V4 = 17.4 # Voltage 4
+        self.phi = 0.04 # Time scale of recovery variable W.
         self.gCa = 4.4 # Conductance of Calcium ions
         self.gK = 8 # Conductance of Potassium ions
         self.gL = 2 # Leak conductance
@@ -123,32 +133,42 @@ class Morris_Lecar:
         return (self.w_inf(V) - W) / self.tau_w(V)
         # return self.phi * (self.beta_m(V) - W)
     
-    def update(self, I, dt):
+    def update(self, I: np.array, dt: float) -> tuple[np.array, np.array]:
         """
-        Function to update the membrane potential 
+        Function to update the membrane potential.
+
+        Attributes:
+        @np.array - I: Input from data/current.
+        @float - dt: Current time.
         """
         self.V = self.V + dt * self.dV(I, self.V, self.W)
         self.W = self.W + dt * self.dW(self.V, self.W)
         self.V_vals.append(self.V)
         return self.V, self.W
 
-    def STDP(self, delta_t, A_plus=0.005, A_minus=0.005, t_plus=20.0, t_minus=20.0):
+    def STDP(self, delta_t: float, A_plus: float=0.005, A_minus: float=0.005, t_plus: float=20.0, t_minus: float=20.0) -> float:
+        """
+        Applied STDP function.
+
+        Attributes: 
+        @float - delta_t: The time difference between the pre- and post-synaptic spikes.
+        @float - A_plus: (default=0.005) The maximum weight change for positive delta_t.
+        @float - A_minus: (default=0.005) The maximum weight change for negative delta_t.
+        @float - t_plus: (default=20.0 ms) The time constant for positive delta_t.
+        @float - t_minus: (default=20.0 ms) The time constant for negative delta_t.
+
+        Returns:
+        @float: The change in synaptic weight based on the STDP rule.
+        """
         if delta_t > 0:
+            # Calculate weight change for positive delta_t using the STDP rule
             weight_change = A_plus * np.exp(-delta_t / t_plus)
             print(f"Weight change due to STDP: {weight_change}.")
             return weight_change
         else:
+            # Calculate weight change for negative delta_t using the STDP rule
             weight_change = -A_minus * np.exp(delta_t / t_minus)
             print(f"Weight change due to STDP: {weight_change}.")
             return weight_change
-        
-    # def plot(self, time):
-    #     # Plotting the results
-    #     plt.figure(figsize=(10, 5))
-    #     plt.plot(time, self.V, label='Membrane potential (V)')
-    #     plt.xlabel('Time (ms)')
-    #     plt.ylabel('Membrane potential (mV)')
-    #     plt.title('Morris-Lecar Model')
-    #     plt.legend()
-    #     plt.show()
+
         

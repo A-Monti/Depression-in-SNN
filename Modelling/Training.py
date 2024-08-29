@@ -15,7 +15,14 @@ class Train_Model:
 
     def saveAnalytics(self) -> None:
         """
-        Save results of training 
+        Save results of training.
+
+        Attributes: 
+        @None
+
+        Return: 
+        @None
+
         """
         np.save(f"Results/{self.model_name}/loss_history.npy", self.loss_history)
         np.save(f"Results/{self.model_name}/accuracy_history.npy", self.accuracy_history)
@@ -23,14 +30,31 @@ class Train_Model:
         # np.save(f"Results/{self.model_name}/membrane_potential.npy", self.membrane_potential)
 
     def saveModel(self):
+        """
+        Save model weights.
+
+        Attributes: 
+        @None
+
+        Return: 
+        @None
+
+        """
         np.savez(f"Results/{self.model_name}.npz", fc1_weights=self.model.fc1_weights, fc2_weights=self.model.fc2_weights)
         self.saveAnalytics()
 
     def getAnalytics(self):
         return self.loss_history, self.accuracy_history, self.spike_record, self.membrane_potential
+    
     def train(self):
         """
-        Training Function
+        Training of model.
+
+        Attributes: 
+        @None
+
+        Return: 
+        @None
         """
         for epoch in range(self.epochs):
             epoch_loss = 0
